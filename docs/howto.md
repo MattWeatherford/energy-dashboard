@@ -1,30 +1,43 @@
 # HowTo
 
-## Create a Jupyter Notebook
+## Create a Jupyter Notebook on your local machine
 
-1. Download Data
-  * Select one or more of the available databases below
-  * Click the links with your browser, or use curl, or wget, whatever.
-2. Decompress the Database(s)
-  * the dataset locally on your machine
-  * Use any tooling that can decompress gzip files (gzip, pigz, etc.)
-3. Verify the database
-  * Use sqlite to run some queries on the database
-  * Noodle around a bit to get a feel for what you have and how it's structured
-```sqlite3
-sqlite DBNAME ".tables"
-sqlite DBNAME "PRAGMA table_info(TABLE_NAME)"
-sqlite DBNAME "select count(*) from TABLE_NAME"
-sqlite DBNAME "select * from TABLE_NAME LIMIT 10"
-```
-4. Create a Jupyter Notebook and wire in your data
-```python3
-import sqlite3
-import pandas as pd
-import matplotlib.pyplot as plt
-from pandasql import sqldf
-# Create the connection
-cnx  = sqlite3.connect(r'../data/data-oasis-as-req-dam/db/caiso-oasis-as-req-dam.db')
+Example as shown on Debian 10 linux
+Commands to run on Linux command line shown with leading "#"
+You may need the following packages for Debian 10:  
+
+# aptitude install jupyter-notebooks python3-pandas sqlite3
+
+1. Create a new working directory
+
+  # mkdir energy-dashboard   (This could also just be a git checkout to create the dir)
+  # cd energy-dashboard
+  
+2. Download Data in to your new directory
+  
+  # wget https://s3.us-west-1.wasabisys.com/eap/energy-dashboard/data/data-oasis-atl-ruc-zone-map/db/data-oasis-atl-ruc-zone-map_00.db.gz
+ 
+3. Decompress the dataset to the same folder:
+  
+  # gunzip data-oasis-atl-ruc-zone-map_00.db.gz
+
+4. Install the pandasql python package:
+
+  # pip install pandasql
+  
+
+5. Start Jupyter Notebook process, go to web interface launched for it
+  
+  # jupyter-notebook
+  
+Create a new '''python3 Jupyter Notebook and paste the code below into a block:
+
+    import sqlite3
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from pandasql import sqldf
+    # Create the connection
+    cnx  = sqlite3.connect(r'data-oasis-atl-ruc-zone-map_00.db')
 ```
 5. See the [example notebooks](../notebooks) for further details
   * [OASIS AS_REQ (DAM)](../notebooks/oasis-as-req-dam.ipynb)
